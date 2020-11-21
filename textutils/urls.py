@@ -21,6 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.index,name='index'),
     path('analize',views.analize,name='analize')
-    # path('previous',views.previous,name='previous')
 ]
 

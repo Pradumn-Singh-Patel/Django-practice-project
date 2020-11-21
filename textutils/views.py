@@ -1,32 +1,33 @@
-# this is self made
-from django.http import HttpResponse
 from django.shortcuts import render
+from django.shortcuts import HttpResponse
 def index(request):
     params={'name':'Pradumn','place':'Varanasi'}
     return render(request,'index.html',params)
-#     return HttpResponse('''<Button> <a href="http://127.0.0.1:8000/next">Next</Button>''''''<Button> <a href="http://127.0.0.1:8000/previous">Previous</Button>''')
-#     #return HttpResponse('''<Button> <a href="http://127.0.0.1:8000/next">Next</Button>''')
 def analize(request):
     dj_text=request.POST.get('text','default')
-    punchua = request.POST.get('remove_punct', 'off')
-    char_count = request.POST.get('char_count', 'off')
+    remove_punchuation = request.POST.get('remove_punct', 'off')
     upper_case = request.POST.get('upper', 'off')
-    print(punchua)
-    final_text=''
-    if punchua=='on':
+
+    if remove_punchuation=='on':
+        punctuation = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
+        final_text = ''
         for i in dj_text:
-         punct = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
-         if i not in punct:
-             final_text+=i
+            if i not in punctuation:
+                final_text+=i
+        params = {'name': 'Pradumn', 'text': final_text}
+        dj_text = final_text
 
 
-    if char_count=='on':
-        count=len(final_text)
-    duplicate=''
     if upper_case=='on':
-        for i in final_text:
-            duplicate+=i.upper()
-    params={'name':'Pradumn singh patel','text':final_text,'count':count,'upper_case':duplicate}
-    return render(request,'analize.html',params)
-# def previous(request):
-#     return HttpResponse("previous <a href='/'>back</a>")
+        final_text = ''
+        for i in dj_text:
+            final_text+=i.upper()
+        params={'name':'Pradumn','text':final_text}
+
+
+    if remove_punchuation=='off' and upper_case=='off':
+        return HttpResponse('<h1>Error</h1>')
+
+    return render(request, 'analize.html', params)
+
+
